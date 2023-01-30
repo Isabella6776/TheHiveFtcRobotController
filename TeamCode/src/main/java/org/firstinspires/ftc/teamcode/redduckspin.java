@@ -113,6 +113,7 @@ public class redduckspin extends LinearOpMode {
     private TeamMarkerDetector detector;
 
     private SamplingLocation samplingLocation = SamplingLocation.RIGHT;
+    private TeamMarkerDetector.ColorPreset colorPreset;
 
 
     /*
@@ -224,10 +225,11 @@ public class redduckspin extends LinearOpMode {
 
 
             // Perform sampling
-           /* boolean thisSample = true;
-            samplingLocation = detector.sample(thisSample);
-            sleep(1);
+           boolean thisSample = true;
 
+            colorPreset = detector.sample(thisSample);
+            sleep(1);
+            /*
             switch (samplingLocation) {
                 case CENTER:
                     telemetry.addData("center", "");

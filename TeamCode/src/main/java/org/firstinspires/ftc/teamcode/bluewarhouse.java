@@ -324,7 +324,7 @@ public class bluewarhouse extends LinearOpMode {
 
 
         // Perform sampling
-        samplingLocation = detector.sample(true);
+        TeamMarkerDetector.ColorPreset colorPreset = detector.sample(true);
         sleep(1);
 
         switch (samplingLocation) {

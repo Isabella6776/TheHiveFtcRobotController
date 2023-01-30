@@ -34,7 +34,7 @@ public class TeamMarkerDetector {
     private static final ColorPreset ACTIVE_PURPLE = ColorPreset.PURE_PURPLE;
     private static final ColorPreset ACTIVE_BLACK = ColorPreset.PURE_GRAY;
 
-    private enum ColorPreset {
+    public enum ColorPreset {
         //orange green purple
         PURE_ORANGE(255, 145, 0),
         PURE_GREEN(0, 255, 0),

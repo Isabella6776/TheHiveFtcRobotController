@@ -4,19 +4,10 @@ package org.firstinspires.ftc.teamcode;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.util.Log;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import com.sun.tools.javac.code.Attribute;
-
-import java.util.*;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.Const;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.internal.android.dx.util.Warning;
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.internal.opmode.TelemetryImpl;
-import org.firstinspires.ftc.robotcore.internal.opmode.TelemetryInternal;
-import org.firstinspires.ftc.teamcode.Constants;
 
 /**
  * Detector class that uses the Vuforia engine to grab a bitmap from the phone camera and detect the location of the Team Marker.
@@ -29,10 +20,10 @@ public class TeamMarkerDetector {
     private int stoneRightX, stoneCenterX, stoneLeftX;
     private static final int STONE_WIDTH = 340, STONE_HEIGHT = 460;
 
-    private static final ColorPreset ACTIVE_ORANGE = ColorPreset.PURE_ORANGE;
-    private static final ColorPreset ACTIVE_GREEN = ColorPreset.PURE_GREEN;
-    private static final ColorPreset ACTIVE_PURPLE = ColorPreset.PURE_PURPLE;
-    private static final ColorPreset ACTIVE_BLACK = ColorPreset.PURE_GRAY;
+    public static final ColorPreset PURE_ORANGE = ColorPreset.PURE_ORANGE;
+    public static final ColorPreset PURE_GREEN = ColorPreset.PURE_GREEN;
+    public static final ColorPreset PURE_PURPLE = ColorPreset.PURE_PURPLE;
+    public static final ColorPreset PURE_GRAY = ColorPreset.PURE_GRAY;
 
     public enum ColorPreset {
         //orange green purple
@@ -96,18 +87,18 @@ public class TeamMarkerDetector {
 //    double ratioCenter = getClosenessToColor(stoneCenter, ACTIVE_BLACK) / getClosenessToColor(stoneCenter, ACTIVE_ORANGE);
 //    double ratioLeft = getClosenessToColor(stoneLeft, ACTIVE_BLACK) / getClosenessToColor(stoneLeft, ACTIVE_ORANGE);
 
-         Log.println(Log.INFO, "bitmapFILTER yellow for right", String.valueOf(getClosenessToColor(stoneRight, ACTIVE_ORANGE)));
-         Log.println(Log.INFO, "bitmapFILTER yellow for center", String.valueOf(getClosenessToColor(stoneCenter, ACTIVE_ORANGE)));
-         Log.println(Log.INFO, "bitmapFILTER yellow for left", String.valueOf(getClosenessToColor(stoneLeft, ACTIVE_ORANGE)));
-         Log.println(Log.INFO, "bitmapFILTER yellow for right", String.valueOf(getClosenessToColor(stoneRight, ACTIVE_GREEN)));
-         Log.println(Log.INFO, "bitmapFILTER yellow for center", String.valueOf(getClosenessToColor(stoneCenter, ACTIVE_GREEN)));
-         Log.println(Log.INFO, "bitmapFILTER yellow for left", String.valueOf(getClosenessToColor(stoneLeft, ACTIVE_GREEN)));
-         Log.println(Log.INFO, "bitmapFILTER yellow for right", String.valueOf(getClosenessToColor(stoneRight, ACTIVE_PURPLE)));
-         Log.println(Log.INFO, "bitmapFILTER yellow for center", String.valueOf(getClosenessToColor(stoneCenter, ACTIVE_PURPLE)));
-         Log.println(Log.INFO, "bitmapFILTER yellow for left", String.valueOf(getClosenessToColor(stoneLeft, ACTIVE_PURPLE)));
-         Log.println(Log.INFO, "bitmapFILTER black for right", String.valueOf(getClosenessToColor(stoneRight, ACTIVE_BLACK)));
-         Log.println(Log.INFO, "bitmapFILTER black for center", String.valueOf(getClosenessToColor(stoneCenter, ACTIVE_BLACK)));
-         Log.println(Log.INFO, "bitmapFILTER black for left", String.valueOf(getClosenessToColor(stoneLeft, ACTIVE_BLACK)));
+         Log.println(Log.INFO, "bitmapFILTER yellow for right", String.valueOf(getClosenessToColor(stoneRight, PURE_ORANGE)));
+         Log.println(Log.INFO, "bitmapFILTER yellow for center", String.valueOf(getClosenessToColor(stoneCenter, PURE_ORANGE)));
+         Log.println(Log.INFO, "bitmapFILTER yellow for left", String.valueOf(getClosenessToColor(stoneLeft, PURE_ORANGE)));
+         Log.println(Log.INFO, "bitmapFILTER yellow for right", String.valueOf(getClosenessToColor(stoneRight, PURE_GREEN)));
+         Log.println(Log.INFO, "bitmapFILTER yellow for center", String.valueOf(getClosenessToColor(stoneCenter, PURE_GREEN)));
+         Log.println(Log.INFO, "bitmapFILTER yellow for left", String.valueOf(getClosenessToColor(stoneLeft, PURE_GREEN)));
+         Log.println(Log.INFO, "bitmapFILTER yellow for right", String.valueOf(getClosenessToColor(stoneRight, PURE_PURPLE)));
+         Log.println(Log.INFO, "bitmapFILTER yellow for center", String.valueOf(getClosenessToColor(stoneCenter, PURE_PURPLE)));
+         Log.println(Log.INFO, "bitmapFILTER yellow for left", String.valueOf(getClosenessToColor(stoneLeft, PURE_PURPLE)));
+         Log.println(Log.INFO, "bitmapFILTER black for right", String.valueOf(getClosenessToColor(stoneRight, PURE_GRAY)));
+         Log.println(Log.INFO, "bitmapFILTER black for center", String.valueOf(getClosenessToColor(stoneCenter, PURE_GRAY)));
+         Log.println(Log.INFO, "bitmapFILTER black for left", String.valueOf(getClosenessToColor(stoneLeft, PURE_GRAY)));
 /*
          if (getClosenessToColor(stoneLeft, ACTIVE_ORANGE) > getClosenessToColor(stoneRight, ACTIVE_ORANGE) && getClosenessToColor(stoneLeft, ACTIVE_ORANGE) > getClosenessToColor(stoneCenter, ACTIVE_ORANGE)) {
              return Constants.SamplingLocation.LEFT;
@@ -119,13 +110,13 @@ public class TeamMarkerDetector {
 */
          ColorPreset seenColor;
      double colorTolerance = 1/100000;
-        if (getClosenessToColor(stoneCenter, ACTIVE_ORANGE)>colorTolerance){
+        if (getClosenessToColor(stoneCenter, PURE_ORANGE)>colorTolerance){
             seenColor = ColorPreset.PURE_ORANGE;
         }
-        else if (getClosenessToColor(stoneCenter, ACTIVE_GREEN)>colorTolerance){
+        else if (getClosenessToColor(stoneCenter, PURE_GREEN)>colorTolerance){
             seenColor = ColorPreset.PURE_GREEN;
         }
-        else if (getClosenessToColor(stoneCenter, ACTIVE_PURPLE)>colorTolerance) {
+        else if (getClosenessToColor(stoneCenter, PURE_PURPLE)>colorTolerance) {
             seenColor = ColorPreset.PURE_PURPLE;
         }
         else{

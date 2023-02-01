@@ -68,23 +68,18 @@ import java.util.List;
 @Autonomous (name= "RIGHT HONEY", group = "Pushbot")
 public class RunByTimeAuto extends LinearOpMode {
     private static final String TFOD_MODEL_ASSET = "PowerPlay.tflite";
-    private ElapsedTime runtime = new ElapsedTime();
+    private static final String VUFORIA_KEY =
+            "ASxSfhX/////AAABmWcpvgdyP053gmhPvX7/JZ5yybQKAVFnqMk+WjYvbuuiectzmcdkuftxSIgVawrOZ7CQOqdHzISXbHCAom4FhIzrDceJIIEGozFWpgAu5dUKc3q843Hd3x875VOBf8B7DlD7g9TgqxqgQRw9coEUBBeEJqy2KGy4NLPoIKLdiIx8yxSWm7SlooFSgmrutF/roBtVM/N+FhY6Sgdy9fgWssccAhd2IxdYllAaw4s1oC1jqtwbjIsdjNVogmwwXdTmqiKHait1PFyF2FDNfKi+7qs4Mc6KbvXD2FHA6RljkcN5Oo080o2QSVCzDuQtJeagh/CglB2PcatFWnebiWN+a43kEdrUaY+uq0YQ8m9IRBWE";
     private static final String[] LABELS = {
             "1 Bolt",
             "2 Bulb",
             "3 Panel"
     };
-    private static final String VUFORIA_KEY =
-            "ASxSfhX/////AAABmWcpvgdyP053gmhPvX7/JZ5yybQKAVFnqMk+WjYvbuuiectzmcdkuftxSIgVawrOZ7CQOqdHzISXbHCAom4FhIzrDceJIIEGozFWpgAu5dUKc3q843Hd3x875VOBf8B7DlD7g9TgqxqgQRw9coEUBBeEJqy2KGy4NLPoIKLdiIx8yxSWm7SlooFSgmrutF/roBtVM/N+FhY6Sgdy9fgWssccAhd2IxdYllAaw4s1oC1jqtwbjIsdjNVogmwwXdTmqiKHait1PFyF2FDNfKi+7qs4Mc6KbvXD2FHA6RljkcN5Oo080o2QSVCzDuQtJeagh/CglB2PcatFWnebiWN+a43kEdrUaY+uq0YQ8m9IRBWE";
-
+    private ElapsedTime runtime = new ElapsedTime();
     private VuforiaLocalizer vuforia;
-
     private TFObjectDetector tfod;
-
     private TeamMarkerDetector detector;
-
     private Constants.SamplingLocation samplingLocation = Constants.SamplingLocation.RIGHT;
-
 
     private void initTfod() {
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
@@ -97,25 +92,11 @@ public class RunByTimeAuto extends LinearOpMode {
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABELS);
     }
 
-
-
-
-
     @Override
     public void runOpMode() {
-
-
         HardwarePushbot robot = new HardwarePushbot();   // Use a Pushbot's hardware
         robot.init(hardwareMap);
         ElapsedTime runtime = new ElapsedTime();
-
-
-        final double FORWARD_SPEED = 0.3;
-        final double TURN_SPEED = 0.3;
-        int frontRightPosition = 0;
-        int frontLeftPosition = 0;
-        int backRightPosition = 0;
-        int backLeftPosition = 0;
 
         /*
          * Initialize the drive system variables.
@@ -127,7 +108,7 @@ public class RunByTimeAuto extends LinearOpMode {
         telemetry.update();
         telemetry.addData("pre int", "wowie");
         telemetry.update();
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId"," id", hardwareMap.appContext.getPackageName());
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", " id", hardwareMap.appContext.getPackageName());
         telemetry.addData("got past the int", "big wowie");
         telemetry.update();
         detector = new TeamMarkerDetector(cameraMonitorViewId);
@@ -143,21 +124,42 @@ public class RunByTimeAuto extends LinearOpMode {
         TeamMarkerDetector.ColorPreset colorPreset = detector.sample(true);
         sleep(1);
 
+        telemetry.addData(colorPreset.name(), "");
+        telemetry.update();
+        dropConeOnPole(robot);
 
         switch (colorPreset) {
-            case ACTIVE_ORANGE:
+            case PURE_ORANGE:
                 telemetry.addData("orange", "");
                 telemetry.update();
                 break;
-            case ACTIVE_GREEN:
+            case PURE_GREEN:
                 telemetry.addData("green", "");
                 telemetry.update();
                 break;
-            case ACTIVE_PURPLE:
+            case PURE_PURPLE:
                 telemetry.addData("purple", "");
                 telemetry.update();
                 break;
+            case PURE_GRAY:
+                telemetry.addData("oh no its gray so sad", "");
+                telemetry.update();
+                break;
+            default:
+                telemetry.addData("oh no its nothing! so we are going to set it to orange", "");
+                telemetry.update();
+                break;
         }
+    }
+
+    void dropConeOnPole(HardwarePushbot robot){
+
+        final double FORWARD_SPEED = 0.3;
+        final double TURN_SPEED = 0.3;
+        int frontRightPosition = 0;
+        int frontLeftPosition = 0;
+        int backRightPosition = 0;
+        int backLeftPosition = 0;
 
         telemetry.addData("Status", "before reset");
         telemetry.update();
@@ -316,12 +318,5 @@ public class RunByTimeAuto extends LinearOpMode {
         robot.frontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.backLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.backRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-
-
-    }
-
-    public TeamMarkerDetector.ColorPreset getColorPreset() {
-        return colorPreset;
     }
 }

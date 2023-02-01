@@ -87,7 +87,7 @@ import java.util.List;
 
 @Autonomous(name="redduckspin", group="Pushbot")
 public class redduckspin extends LinearOpMode {
-    private static final String TFOD_MODEL_ASSET = "FreightFrenzy_DM.tflite";
+    private static final String TFOD_MODEL_ASSET = "PowerPlay.tflite";
     private ElapsedTime runtime = new ElapsedTime();
     private static final String[] LABELS = {
         //"Ball",
@@ -229,7 +229,7 @@ public class redduckspin extends LinearOpMode {
 
             colorPreset = detector.sample(thisSample);
             sleep(1);
-            /*
+
             switch (samplingLocation) {
                 case CENTER:
                     telemetry.addData("center", "");
@@ -243,7 +243,7 @@ public class redduckspin extends LinearOpMode {
                     telemetry.addData("right", "");
                     telemetry.update();
                     break;
-            }*/
+            }
 
 
 

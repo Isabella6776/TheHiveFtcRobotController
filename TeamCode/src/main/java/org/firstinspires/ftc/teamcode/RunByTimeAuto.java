@@ -74,8 +74,30 @@ public class RunByTimeAuto extends LinearOpMode {
             "2 Bulb",
             "3 Panel"
     };
+    private static final String VUFORIA_KEY =
+            "ASxSfhX/////AAABmWcpvgdyP053gmhPvX7/JZ5yybQKAVFnqMk+WjYvbuuiectzmcdkuftxSIgVawrOZ7CQOqdHzISXbHCAom4FhIzrDceJIIEGozFWpgAu5dUKc3q843Hd3x875VOBf8B7DlD7g9TgqxqgQRw9coEUBBeEJqy2KGy4NLPoIKLdiIx8yxSWm7SlooFSgmrutF/roBtVM/N+FhY6Sgdy9fgWssccAhd2IxdYllAaw4s1oC1jqtwbjIsdjNVogmwwXdTmqiKHait1PFyF2FDNfKi+7qs4Mc6KbvXD2FHA6RljkcN5Oo080o2QSVCzDuQtJeagh/CglB2PcatFWnebiWN+a43kEdrUaY+uq0YQ8m9IRBWE";
 
-    ;
+    private VuforiaLocalizer vuforia;
+
+    private TFObjectDetector tfod;
+
+    private TeamMarkerDetector detector;
+
+    private Constants.SamplingLocation samplingLocation = Constants.SamplingLocation.RIGHT;
+
+
+    private void initTfod() {
+        int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
+                "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
+        tfodParameters.minResultConfidence = 0.8f;
+        tfodParameters.isModelTensorFlow2 = true;
+        tfodParameters.inputSize = 320;
+        tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
+        tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABELS);
+    }
+
+
 
 
 
@@ -103,11 +125,39 @@ public class RunByTimeAuto extends LinearOpMode {
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Ready to run");    //
         telemetry.update();
+        telemetry.addData("pre int", "wowie");
+        telemetry.update();
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId"," id", hardwareMap.appContext.getPackageName());
+        telemetry.addData("got past the int", "big wowie");
+        telemetry.update();
+        detector = new TeamMarkerDetector(cameraMonitorViewId);
 
+        telemetry.addData("we got here", "before the waitForStart(); ");
+        telemetry.update();
         // Wait for the game to start (driver presses PLAY)
         //List<Recognition> updatedRecognitions = tfod.getRecognitions();
         waitForStart();
+        double currenttime = runtime.seconds();
 
+
+        TeamMarkerDetector.ColorPreset colorPreset = detector.sample(true);
+        sleep(1);
+
+
+        switch (colorPreset) {
+            case ACTIVE_ORANGE:
+                telemetry.addData("orange", "");
+                telemetry.update();
+                break;
+            case ACTIVE_GREEN:
+                telemetry.addData("green", "");
+                telemetry.update();
+                break;
+            case ACTIVE_PURPLE:
+                telemetry.addData("purple", "");
+                telemetry.update();
+                break;
+        }
 
         telemetry.addData("Status", "before reset");
         telemetry.update();
@@ -267,4 +317,11 @@ public class RunByTimeAuto extends LinearOpMode {
         robot.backLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.backRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-    }}
+
+
+    }
+
+    public TeamMarkerDetector.ColorPreset getColorPreset() {
+        return colorPreset;
+    }
+}

@@ -126,19 +126,20 @@ public class RunByTimeAuto extends LinearOpMode {
 
         telemetry.addData(colorPreset.name(), "");
         telemetry.update();
+        sleep(1000);
         dropConeOnPole(robot);
 
         switch (colorPreset) {
             case PURE_ORANGE:
-                telemetry.addData("orange", "");
+                telemetry.addData("orange was detected", "");
                 telemetry.update();
                 break;
             case PURE_GREEN:
-                telemetry.addData("green", "");
+                telemetry.addData("green was detected", "");
                 telemetry.update();
                 break;
             case PURE_PURPLE:
-                telemetry.addData("purple", "");
+                telemetry.addData("purple was detected", "");
                 telemetry.update();
                 break;
             case PURE_GRAY:
@@ -150,6 +151,7 @@ public class RunByTimeAuto extends LinearOpMode {
                 telemetry.update();
                 break;
         }
+        sleep(1000);
     }
 
     void dropConeOnPole(HardwarePushbot robot){

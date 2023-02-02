@@ -28,8 +28,8 @@ public class TeamMarkerDetector {
     public enum ColorPreset {
         //orange green purple
         PURE_ORANGE(255, 145, 0),
-        PURE_GREEN(0, 255, 0),
-        PURE_PURPLE(198, 3, 252),
+        PURE_GREEN(0, 175, 0),
+        PURE_PURPLE(109, 0, 175),
         PURE_GRAY(128, 123, 125);
 
         int r, g, b;
